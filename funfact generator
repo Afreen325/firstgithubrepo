@@ -1,0 +1,61 @@
+Fun Fact Generator Web App in Python
+Last Updated :
+23 Feb, 2026
+In this tutorial, we will create a Fun Fact Generator Web App in Python using the PyWebIO module. This app fetches random fun facts from the Useless Facts API and displays them on a web interface.
+
+PyWebIO is a Python library that allows you to build simple web applications or browser-based GUI apps without writing HTML or JS. It provides:
+
+Functions for input and output in the browser
+Easy styling for text and buttons
+Session handling for interactive applications
+You can install it using:
+
+pip install pywebio
+
+How the App Works
+Fetch data: The app sends a GET request to the Useless Facts API.
+Parse JSON: The response is parsed using the json module to extract the fact text.
+Display fact: The fact is displayed on the web interface using PyWebIO's put_text and style.
+Interactive button: A "Click me" button allows users to generate new facts without refreshing the page.
+
+import json
+import requests
+from pywebio.input import *
+from pywebio.output import *
+from pywebio.session import *
+
+def get_fun_fact(_):
+    clear()
+    
+    put_html(
+        '<p align="left">'
+        '<h2><img src="https://media.geeksforgeeks.org/wp-content/uploads/20210720224119/MessagingHappyicon.png" width="7%"> Fun Fact Generator</h2>'
+        '</p>'
+    )
+    
+    url = "https://uselessfacts.jsph.pl/random.json?language=en"
+    
+    response = requests.get(url)
+    data = json.loads(response.text)
+    
+    useless_fact = data['text']
+    style(put_text(useless_fact), 'color:blue; font-size: 30px')
+    
+    put_buttons(
+        [dict(label='Click me', value='outline-success', color='outline-success')],
+        onclick=get_fun_fact
+    )
+
+if __name__ == '__main__':
+    put_html(
+        '<p align="left">'
+        '<h2><img src="https://media.geeksforgeeks.org/wp-content/uploads/20210720224119/MessagingHappyicon.png" width="7%"> Fun Fact Generator</h2>'
+        '</p>'
+    )
+    
+    put_buttons(
+        [dict(label='Click me', value='outline-success', color='outline-success')],
+        onclick=get_fun_fact
+    )
+    
+    hold()
